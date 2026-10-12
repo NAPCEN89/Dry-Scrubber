@@ -1384,103 +1384,69 @@ export default function NapcenLandingPage() {
         {/* DRY SCRUBBER COMPONENTS SECTION */}
         <section id="components" className="py-20 sm:py-28 bg-white relative overflow-hidden border-t border-slate-100">
           <div className="w-full px-6 lg:px-14 xl:px-20 mx-auto max-w-[1600px] relative z-10">
-            {/* Header: 2 Columns */}
-            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 lg:gap-16 mb-12 sm:mb-16">
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="max-w-xl">
-                <span className="text-gray-600 font-bold text-[11px] sm:text-[12px] tracking-[0.22em] uppercase block mb-3">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-24 items-start">
+              
+              {/* Left Column: Heading & System Description */}
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeInUp}
+                className="max-w-xl"
+              >
+                <span className="text-slate-500 font-bold text-[11px] sm:text-[12px] tracking-[0.22em] uppercase block mb-4">
                   DRY SCRUBBER COMPONENTS
                 </span>
-                <h2 className="text-3xl sm:text-4xl lg:text-[46px] font-black text-[#0f1b3a] leading-[1.12] tracking-tight">
-                  Engineered internals.<br />
-                  <span className="text-primary-blue">Built for continuous duty.</span>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0f1b3a] leading-[1.12] tracking-tight mb-7">
+                  A complete system.<br />
+                  <span className="text-primary-blue">Beyond the vessel.</span>
                 </h2>
+                
+                <div className="space-y-5 text-slate-600 text-[15px] sm:text-[16px] leading-relaxed font-normal">
+                  <p>
+                    A dry scrubber system may include a capture hood, ductwork, pre-filter, treatment vessel, media support, blower and discharge stack. Instruments and access arrangements turn these components into a maintainable installation.
+                  </p>
+                  <p>
+                    Vessel material and seals must suit corrosion, temperature and chemical compatibility. Bed geometry affects flow distribution, pressure loss and residence time. Fan selection must account for the resistance of the complete extraction path.
+                  </p>
+                </div>
               </motion.div>
 
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="max-w-md lg:pb-2">
-                <p className="text-slate-600 text-[14px] sm:text-[15px] leading-relaxed font-normal">
-                  From robust vessel casings and flow distribution plenums to precision media support grids and instrumentation, every component is engineered for reliable air pollution control and simplified maintenance.
-                </p>
-              </motion.div>
-            </div>
+              {/* Right Column: Specify the details that matter */}
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeInUp}
+                className="w-full lg:pt-2"
+              >
+                <h3 className="text-2xl sm:text-3xl font-bold text-[#0f1b3a] tracking-tight mb-6 sm:mb-8">
+                  Specify the details that matter
+                </h3>
 
-            {/* 6 Component Cards Grid */}
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
-              {[
-                {
-                  code: "01",
-                  tag: "STRUCTURAL CASING",
-                  title: "Heavy-duty vessel / housing",
-                  desc: "Fabricated in SS304/SS316, FRP, or coated carbon steel engineered to withstand process pressures, thermal cycles, and harsh outdoor industrial environments.",
-                  icon: Box
-                },
-                {
-                  code: "02",
-                  tag: "BED RETENTION",
-                  title: "Media support grid & screens",
-                  desc: "Precision-perforated plates and woven retention mesh that distribute gas evenly, hold granular or pellet media securely, and prevent media migration.",
-                  icon: Layers
-                },
-                {
-                  code: "03",
-                  tag: "FLOW DISTRIBUTION",
-                  title: "Inlet & outlet plenums",
-                  desc: "Aerodynamic expansion plenums and baffles that maintain uniform face velocity across the bed surface, preventing gas channeling and dead zones.",
-                  icon: Wind
-                },
-                {
-                  code: "04",
-                  tag: "SYSTEM MONITORING",
-                  title: "Differential pressure gauges",
-                  desc: "Direct-reading Magnehelic DP gauges and transmitters to monitor pressure loss across the bed, tracking loading and warning of pending breakthrough.",
-                  icon: BarChart3
-                },
-                {
-                  code: "05",
-                  tag: "AIR MOVEMENT",
-                  title: "Centrifugal extraction fan",
-                  desc: "Direct-drive or belt-drive fans dynamically balanced for high static efficiency, spark resistance, and continuous air conveyance from source hoods.",
-                  icon: Fan
-                },
-                {
-                  code: "06",
-                  tag: "MAINTENANCE ACCESS",
-                  title: "Quick-access changeout ports",
-                  desc: "Bolted or quick-release gastight manways, top media charging ports, and bottom discharge chutes designed for safe, expedited media replacement.",
-                  icon: Wrench
-                }
-              ].map((item, idx) => {
-                const IconComponent = item.icon;
-                return (
-                  <motion.div
-                    key={idx}
-                    variants={fadeInUp}
-                    className="relative overflow-hidden group bg-slate-50/70 rounded-2xl p-7 sm:p-8 border border-slate-200/80 shadow-[0_2px_15px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_35px_rgba(15,27,58,0.08)] hover:border-primary-blue/30 hover:bg-white transition-all duration-300 flex flex-col justify-between min-h-[260px] sm:min-h-[280px]"
-                  >
-                    <div className="relative z-10">
-                      {/* Icon badge */}
-                      <div className="flex items-center justify-between mb-5">
-                        <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-primary-blue group-hover:bg-primary-blue group-hover:text-white group-hover:border-primary-blue shadow-sm transition-all duration-300">
-                          <IconComponent className="w-5 h-5" strokeWidth={2} />
-                        </div>
-                        <span className="text-3xl font-light text-slate-300 group-hover:text-primary-blue/30 transition-colors">
-                          {item.code}
-                        </span>
-                      </div>
-
-                      <span className="text-[11px] font-bold tracking-[0.2em] text-primary-blue uppercase mb-3 block">
-                        {item.tag}
+                <div className="flex flex-col">
+                  {[
+                    "Inlet distribution and media support arrangement",
+                    "Pressure measurement and gas sampling points",
+                    "Media-loading access and replacement clearance",
+                    "Duct interfaces, blower duty and discharge location",
+                    "Electrical controls, interlocks and monitoring scope",
+                    "Safe isolation, spent-media handling and service access",
+                  ].map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="py-4 sm:py-4.5 border-b border-slate-200/80 flex items-center gap-3.5 group cursor-default transition-all duration-200 hover:pl-1.5"
+                    >
+                      <ArrowUpRight className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-primary-blue shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      <span className="text-slate-700 font-medium text-[15px] sm:text-[16px] group-hover:text-primary-blue transition-colors duration-200">
+                        {item}
                       </span>
-                      <h3 className="text-[20px] sm:text-[22px] font-bold text-[#0f1b3a] leading-snug mb-3">
-                        {item.title}
-                      </h3>
-                      <p className="text-slate-600 text-[13.5px] sm:text-[14px] leading-relaxed font-normal">
-                        {item.desc}
-                      </p>
                     </div>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+
+            </div>
           </div>
         </section>
 
