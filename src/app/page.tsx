@@ -165,21 +165,23 @@ export default function NapcenLandingPage() {
             <div className="flex flex-col md:flex-row gap-8 xl:gap-12 items-center md:items-stretch min-h-[480px]">
 
               {/* LEFT: TEXT & STATS */}
-              <div className="w-full md:w-[45%] xl:w-[43%] flex flex-col justify-start pt-5 sm:pt-6 lg:pt-8">
-                <div className="mb-6">
-                  <span className="text-slate-500 font-bold text-[10px] sm:text-xs tracking-[0.2em] uppercase">
-                    NAPCEN / Industrial air treatment
+              <div className="w-full md:w-[46%] xl:w-[45%] flex flex-col justify-start pt-3 sm:pt-4 lg:pt-6">
+                <div className="mb-4 sm:mb-5">
+                  <span className="text-slate-500 font-bold text-[10px] sm:text-[11px] tracking-[0.2em] uppercase">
+                    ENGINEERED INDUSTRIAL AIR POLLUTION CONTROL SOLUTIONS
                   </span>
                 </div>
 
-                <h1 className="text-4xl sm:text-5xl lg:text-[52px] xl:text-[56px] font-black text-[#0f1b3a] leading-[1.1] tracking-tight mb-6">
-                  Cleaner air. <br />
-                  Smarter dry <br />
-                  <span className="text-primary-blue">scrubbing.</span>
+                <h1 className="text-3xl sm:text-4xl lg:text-[42px] xl:text-[46px] font-black text-[#0f1b3a] leading-[1.15] tracking-tight mb-4">
+                  Industrial Dry Scrubber <span className="text-primary-blue">Manufacturers in India</span>
                 </h1>
 
-                <p className="text-slate-500 text-lg mb-10 max-w-lg leading-relaxed font-medium">
-                  Dry scrubber systems for H₂S, VOCs, biogas and industrial odour. Start with your gas composition. Build around your process.
+                <h2 className="text-[17px] sm:text-[18px] lg:text-[19px] font-bold text-[#0f1b3a] leading-snug mb-4">
+                  Engineered Solutions for H₂S, VOC, Biogas and Industrial Odour Control
+                </h2>
+
+                <p className="text-slate-600 text-[14.5px] sm:text-[15px] mb-8 max-w-xl leading-relaxed font-normal">
+                  NAPCEN designs and manufactures industrial dry scrubber systems using activated carbon and application-specific reactive media to treat contaminated process gases. Our solutions are engineered around gas flow rate, pollutant concentration, operating conditions and required outlet performance.
                 </p>
 
                 <div className="flex flex-wrap items-center gap-4 pb-8 mb-8 border-b border-slate-200 w-fit">
@@ -239,20 +241,25 @@ export default function NapcenLandingPage() {
 
                     <div className="flex flex-col gap-2">
                       <label className="text-[13px] font-bold text-[#0f1b3a]">Treatment requirement</label>
-                      <select value={formData.application} onChange={(e) => setFormData({ ...formData, application: e.target.value })} className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-primary-blue focus:ring-1 focus:ring-primary-blue text-slate-700 transition-all font-medium shadow-sm">
-                        <option value="H₂S dry scrubber">H₂S dry scrubber</option>
-                        <option value="VOC dry scrubber">VOC dry scrubber</option>
-                        <option value="STP odour control">STP odour control</option>
-                        <option value="Portable dry scrubber">Portable dry scrubber</option>
-                        <option value="Biogas dry scrubber">Biogas dry scrubber</option>
-                        <option value="Dry acid-gas treatment">Dry acid-gas treatment</option>
-                        <option value="Mixed gas / application review">Mixed gas / application review</option>
+                      <select
+                        value={formData.application}
+                        onChange={(e) => setFormData({ ...formData, application: e.target.value })}
+                        className={`w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-primary-blue focus:ring-1 focus:ring-primary-blue transition-all font-medium shadow-sm ${!formData.application ? "text-slate-400" : "text-slate-700"}`}
+                      >
+                        <option value="" disabled hidden>Select the option</option>
+                        <option value="H₂S dry scrubber" className="text-slate-700">H₂S dry scrubber</option>
+                        <option value="VOC dry scrubber" className="text-slate-700">VOC dry scrubber</option>
+                        <option value="STP odour control" className="text-slate-700">STP odour control</option>
+                        <option value="Portable dry scrubber" className="text-slate-700">Portable dry scrubber</option>
+                        <option value="Biogas dry scrubber" className="text-slate-700">Biogas dry scrubber</option>
+                        <option value="Dry acid-gas treatment" className="text-slate-700">Dry acid-gas treatment</option>
+                        <option value="Mixed gas / application review" className="text-slate-700">Mixed gas / application review</option>
                         {formData.application && ![
                           "H₂S dry scrubber", "VOC dry scrubber", "STP odour control",
                           "Portable dry scrubber", "Biogas dry scrubber",
                           "Dry acid-gas treatment", "Mixed gas / application review"
                         ].includes(formData.application) && (
-                          <option value={formData.application}>{formData.application}</option>
+                          <option value={formData.application} className="text-slate-700">{formData.application}</option>
                         )}
                       </select>
                     </div>
@@ -607,7 +614,7 @@ export default function NapcenLandingPage() {
                 </h2>
 
                 <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-normal">
-                  A typical media-based dry scrubber follows four stages. Pretreatment and monitoring are added according to the duty.
+                  Differential pressure monitoring helps identify airflow restrictions and media-bed resistance. Pollutant breakthrough should be assessed through suitable outlet gas monitoring or scheduled media testing, rather than pressure drop alone.
                 </p>
               </motion.div>
             </div>
@@ -635,8 +642,8 @@ export default function NapcenLandingPage() {
                     <span className="block whitespace-nowrap text-primary-blue">to controlled discharge.</span>
                   </h2>
 
-                  <p className="text-slate-600 text-xs lg:text-[13px] xl:text-[13.5px] leading-relaxed font-normal max-w-md lg:max-w-lg">
-                    A typical media-based dry scrubber follows four stages. Pretreatment and monitoring are added according to the duty.
+                  <p className="text-slate-600 text-xs lg:text-[13px] xl:text-[13.5px] leading-relaxed font-normal max-w-md lg:max-w-xl">
+                    Differential pressure monitoring helps identify airflow restrictions and media-bed resistance. Pollutant breakthrough should be assessed through suitable outlet gas monitoring or scheduled media testing, rather than pressure drop alone.
                   </p>
                 </div>
 
@@ -1660,18 +1667,17 @@ export default function NapcenLandingPage() {
           </div>
 
           <div className="w-full px-5 sm:px-8 lg:px-12 xl:px-16 mx-auto max-w-[1600px] relative z-20">
-            <div className="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-9 max-w-fit">
+            <div className="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-12 max-w-fit">
 
               {/* Left Column: Heading */}
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="shrink-0 max-w-md lg:max-w-[440px]">
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="shrink-0 max-w-md lg:max-w-[500px] xl:max-w-[540px]">
                 <div className="mb-3 sm:mb-4">
                   <span className="text-gray-400 font-mono font-bold text-[11px] sm:text-xs lg:text-[13px] tracking-[0.25em] uppercase block">
                     NAPCEN
                   </span>
                 </div>
-                <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-[48px] font-black text-white leading-[1.15] sm:leading-[1.1] tracking-tight">
-                  Air pollution control.<br />
-                  With a practical focus.
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[50px] xl:text-[54px] font-black text-white leading-[1.12] sm:leading-[1.08] tracking-tight">
+                  Industrial Air Pollution Control Equipment Manufacturer
                 </h2>
               </motion.div>
 
@@ -1681,13 +1687,13 @@ export default function NapcenLandingPage() {
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={fadeInUp}
-                className="max-w-md lg:max-w-[390px]"
+                className="max-w-md lg:max-w-[440px] xl:max-w-[460px]"
               >
                 <p className="text-slate-200 text-xs sm:text-sm md:text-[14px] lg:text-[15px] leading-relaxed mb-3 sm:mb-4 font-normal">
-                  NAPCEN is an air pollution control equipment manufacturer with dry scrubbers, wet scrubbers, dust collectors and fume extraction equipment in its product range.
+                  NAPCEN provides engineered air pollution control equipment for industrial applications, including dry scrubbers, wet scrubbers, dust collectors and fume extraction systems.
                 </p>
                 <p className="text-slate-400 text-xs sm:text-sm md:text-[14px] lg:text-[15px] leading-relaxed mb-5 sm:mb-7 font-normal">
-                  This dedicated dry scrubber page helps you prepare a clear enquiry, compare treatment approaches and discuss the requirements of your industrial gas stream.
+                  Our dry scrubber solutions are developed around the customer&apos;s gas composition, process requirements, operating conditions and treatment objectives. From initial technical evaluation and equipment design to manufacturing and project support, NAPCEN focuses on application-specific industrial gas treatment solutions.
                 </p>
 
                 <a
