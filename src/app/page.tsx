@@ -8,6 +8,7 @@ import { Footer } from "@/components/ui/modem-animated-footer";
 import ThreeBackground from "@/components/napcen-landing/ThreeBackground";
 import LogoTicker from "@/components/napcen-landing/LogoTicker";
 import WorkflowSection from "@/components/napcen-landing/WorkflowSection";
+import CurvedHeader from "@/components/ui/curved-menu";
 
 // --- ANIMATION VARIANTS ---
 const fadeInUp: Variants = {
@@ -148,6 +149,11 @@ export default function NapcenLandingPage() {
             <a href="#faq" className="hover:text-primary-blue transition-colors">FAQ</a>
             <a href="#contact" className="hover:text-primary-blue transition-colors">Enquire</a>
           </nav>
+
+          {/* Curved Menu for Mobile View */}
+          <div className="md:hidden">
+            <CurvedHeader />
+          </div>
         </div>
       </header>
 
