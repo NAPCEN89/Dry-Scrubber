@@ -1670,13 +1670,13 @@ export default function NapcenLandingPage() {
             <div className="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-12 max-w-fit">
 
               {/* Left Column: Heading */}
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="shrink-0 max-w-md lg:max-w-[500px] xl:max-w-[540px]">
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="shrink-0 max-w-md lg:max-w-[460px]">
                 <div className="mb-3 sm:mb-4">
                   <span className="text-gray-400 font-mono font-bold text-[11px] sm:text-xs lg:text-[13px] tracking-[0.25em] uppercase block">
                     NAPCEN
                   </span>
                 </div>
-                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[50px] xl:text-[54px] font-black text-white leading-[1.12] sm:leading-[1.08] tracking-tight">
+                <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-[44px] font-black text-white leading-[1.15] sm:leading-[1.12] tracking-tight">
                   Industrial Air Pollution Control Equipment Manufacturer
                 </h2>
               </motion.div>
