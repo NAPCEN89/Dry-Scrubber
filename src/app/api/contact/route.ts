@@ -1,50 +1,42 @@
 import { NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
 
 export async function POST(req: Request) {
   try {
     const data = await req.json();
-    
-    // Configure this with your actual SMTP credentials
-    // You should put these in your .env.local file
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || "smtp.gmail.com",
-      port: Number(process.env.SMTP_PORT) || 587,
-      secure: Number(process.env.SMTP_PORT) === 465, // true for 465, false for other ports
-      auth: {
-        user: process.env.SMTP_USER, 
-        pass: process.env.SMTP_PASS, 
-      },
-    });
+    const ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "233963d2-f4b0-4f25-9a2f-bf7e151ac018";
 
-    const mailOptions = {
-      from: process.env.SMTP_USER || 'no-reply@napcen.com',
-      to: process.env.SMTP_USER || 'marketing@napcen.com',
-      subject: 'New Inquiry from NAPCEN Website',
-      text: `
-Name: ${data.name}
-Company: ${data.company}
-Email: ${data.email}
-Phone: ${data.phone}
-Industry: ${data.industry}
-Application: ${data.application}
-Equipment: ${data.equipment}
-Description: ${data.desc}
-      `,
+    const payload = {
+      access_key: ACCESS_KEY,
+      subject: `New Inquiry: ${data.application || data.equipment || data.product || 'Website Contact'} — NAPCEN`,
+      from_name: data.name || "NAPCEN Lead",
+      name: data.name,
+      company: data.company,
+      email: data.email,
+      phone: data.phone || data.mobile,
+      application: data.application || data.equipment || data.product,
+      message: data.desc || data.message,
     };
 
-    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-      console.warn("SMTP credentials not configured. Form data:", data);
-      // If credentials are not set, return success so the frontend UI can be tested.
-      // The email will NOT actually be sent until you set SMTP_USER and SMTP_PASS.
-      return NextResponse.json({ success: true, message: "Logged (SMTP not configured)" });
-    }
+    const res = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
 
-    await transporter.sendMail(mailOptions);
-    
-    return NextResponse.json({ success: true, message: "Email sent successfully" });
+    const result = await res.json();
+
+    if (result.success) {
+      return NextResponse.json({ success: true, message: "Inquiry sent successfully" });
+    } else {
+      console.error("Web3Forms Response Error:", result);
+      return NextResponse.json({ error: result.message || 'Failed to send inquiry' }, { status: 400 });
+    }
   } catch (error) {
-    console.error("Error sending email:", error);
-    return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
+    console.error("Error sending inquiry:", error);
+    return NextResponse.json({ error: 'Failed to send inquiry' }, { status: 500 });
   }
 }
+

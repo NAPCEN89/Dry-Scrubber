@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { motion, Variants, AnimatePresence } from "framer-motion";
-import { Droplets, Droplet, Wind, Grip, Fan, Table, Beaker, RefreshCcw, Share2, Leaf, Shield, Settings, BarChart3, Phone, Mail, MapPin, ChevronRight, Target, Sliders, Layers, Briefcase, Factory, LifeBuoy, Globe, Users, FileText, Send, Cloud, FlaskConical, Pill, Car, PaintRoller, Utensils, Cpu, Scissors, Gem, FileSearch, MonitorCog, Wrench, Headset, Building2, Anchor, FileBadge, ArrowRight, ArrowUpRight, Plane, Database, Info, CircleDot, Asterisk, LineChart, Thermometer, Clock, Box, ClipboardCheck, Search } from "lucide-react";
+import { Droplets, Droplet, Wind, Grip, Fan, Table, Beaker, RefreshCcw, Share2, Leaf, Shield, Settings, BarChart3, Phone, Mail, MapPin, ChevronRight, Target, Sliders, Layers, Briefcase, Factory, LifeBuoy, Globe, Users, FileText, Send, Cloud, FlaskConical, Pill, Car, PaintRoller, Utensils, Cpu, Scissors, Gem, FileSearch, MonitorCog, Wrench, Headset, Building2, Anchor, FileBadge, ArrowRight, ArrowUpRight, Plane, Database, Info, CircleDot, Asterisk, LineChart, Thermometer, Clock, Box, ClipboardCheck, Search, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { Footer } from "@/components/ui/modem-animated-footer";
 import ThreeBackground from "@/components/napcen-landing/ThreeBackground";
 import LogoTicker from "@/components/napcen-landing/LogoTicker";
@@ -34,6 +34,8 @@ export default function NapcenLandingPage() {
     name: "", company: "", email: "", phone: "", industry: "", application: "", equipment: "", desc: "",
     country: "", location: "", airflow: "", unit: "", temp: "", timeline: ""
   });
+  const [formStatus, setFormStatus] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const [formStep, setFormStep] = useState(1);
   const [productFilter, setProductFilter] = useState("All equipment");
@@ -71,30 +73,63 @@ export default function NapcenLandingPage() {
       image: "/Industrial H₂S Adsorption Skid (1).png"
     }
   ];
-  const handleDemoSubmit = async (e: React.FormEvent) => {
+
+  const handleQuoteSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Validation
+    if (!formData.name || !formData.email || !formData.desc) {
+      setFormStatus("Please fill in Name, Email and Project Details");
+      setTimeout(() => setFormStatus(""), 5000);
+      return;
+    }
+
+    setIsSubmitting(true);
+    setFormStatus("Sending your request...");
+
+    // Web3Forms Configuration
+    const ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "233963d2-f4b0-4f25-9a2f-bf7e151ac018";
+
+    const payload = {
+      access_key: ACCESS_KEY,
+      subject: `New Quote Request: ${formData.application || "Dry Scrubber System"} — ${formData.company || formData.name || "NAPCEN Inquiry"}`,
+      from_name: formData.name || "NAPCEN Lead",
+      name: formData.name,
+      company: formData.company,
+      email: formData.email,
+      phone: formData.phone,
+      product: formData.application || "Dry Scrubber System",
+      message: `Company: ${formData.company || "N/A"}\nPhone: ${formData.phone || "N/A"}\nRequirement: ${formData.application || "N/A"}\n\nProject Details:\n${formData.desc}`,
+    };
+
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
-      if (res.ok) {
-        alert("Thank you! Your inquiry has been successfully submitted.");
+      const result = await res.json();
+
+      if (result.success) {
+        setFormStatus("Thank you! We will contact you soon.");
         setFormData({
           name: "", company: "", email: "", phone: "", industry: "", application: "", equipment: "", desc: "",
           country: "", location: "", airflow: "", unit: "", temp: "", timeline: ""
         });
-        setFormStep(1);
       } else {
-        alert("Sorry, something went wrong. Please try again.");
+        console.error("Web3Forms Response Error:", result);
+        setFormStatus("Submission failed. Please try again or call us.");
       }
     } catch (error) {
-      alert("Sorry, something went wrong. Please try again.");
+      console.error("Network Exception:", error);
+      setFormStatus("Submission failed. Please try again or call us.");
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => setFormStatus(""), 6000);
     }
   };
 
@@ -222,26 +257,26 @@ export default function NapcenLandingPage() {
                 <div className="bg-white rounded-3xl p-5 sm:p-6 lg:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-slate-100">
                   <h3 className="text-2xl lg:text-3xl font-black text-[#0f1b3a] mb-6">Request an engineered quotation</h3>
 
-                  <form className="space-y-4">
+                  <form onSubmit={handleQuoteSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 xl:gap-5">
                       <div className="flex flex-col gap-2">
                         <label className="text-[13px] font-bold text-[#0f1b3a]">Name *</label>
-                        <input required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-primary-blue focus:ring-1 focus:ring-primary-blue text-slate-700 transition-all font-medium shadow-sm" />
+                        <input required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder="Your full name" className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-primary-blue focus:ring-1 focus:ring-primary-blue text-slate-700 transition-all font-medium shadow-sm" />
                       </div>
                       <div className="flex flex-col gap-2">
                         <label className="text-[13px] font-bold text-[#0f1b3a]">Company *</label>
-                        <input required value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })} className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-primary-blue focus:ring-1 focus:ring-primary-blue text-slate-700 transition-all font-medium shadow-sm" />
+                        <input required value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })} placeholder="Company name" className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-primary-blue focus:ring-1 focus:ring-primary-blue text-slate-700 transition-all font-medium shadow-sm" />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 xl:gap-5">
                       <div className="flex flex-col gap-2">
                         <label className="text-[13px] font-bold text-[#0f1b3a]">Email *</label>
-                        <input type="email" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-primary-blue focus:ring-1 focus:ring-primary-blue text-slate-700 transition-all font-medium shadow-sm" />
+                        <input type="email" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} placeholder="you@company.com" className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-primary-blue focus:ring-1 focus:ring-primary-blue text-slate-700 transition-all font-medium shadow-sm" />
                       </div>
                       <div className="flex flex-col gap-2">
                         <label className="text-[13px] font-bold text-[#0f1b3a]">Phone</label>
-                        <input type="tel" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-primary-blue focus:ring-1 focus:ring-primary-blue text-slate-700 transition-all font-medium shadow-sm" />
+                        <input type="tel" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} placeholder="+91 98765 43210" className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-primary-blue focus:ring-1 focus:ring-primary-blue text-slate-700 transition-all font-medium shadow-sm" />
                       </div>
                     </div>
 
@@ -276,16 +311,47 @@ export default function NapcenLandingPage() {
                     </div>
 
                     <p className="text-[12px] text-slate-500 font-medium leading-relaxed mt-2">
-                      This form prepares an email in your email app. Review it and press Send to submit your enquiry. No details are stored on this website.
+                      Your quotation request will be sent directly to NAPCEN engineers for evaluation.
                     </p>
 
-                    <button type="button" onClick={() => {
-                      const subject = encodeURIComponent(`Enquiry: ${formData.application || 'H₂S / odour control'} from ${formData.company}`);
-                      const body = encodeURIComponent(`Name: ${formData.name}\nCompany: ${formData.company}\nEmail: ${formData.email}\nPhone: ${formData.phone}\n\nTreatment Requirement: ${formData.application || 'H₂S / odour control'}\n\nProject Details:\n${formData.desc}`);
-                      window.location.href = `mailto:info@napcen.com?subject=${subject}&body=${body}`;
-                    }} className="w-full bg-[#0a5cbb] hover:bg-blue-800 text-white font-black py-4 rounded-xl transition-all shadow-md text-sm lg:text-[15px] flex items-center justify-center gap-2 tracking-wide mt-4">
-                      Prepare my enquiry email <ArrowRight size={18} className="-rotate-45" />
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className={`w-full bg-[#0a5cbb] hover:bg-blue-800 text-white font-black py-4 rounded-xl transition-all shadow-md text-sm lg:text-[15px] flex items-center justify-center gap-2 tracking-wide mt-4 ${
+                        isSubmitting ? "opacity-70 cursor-not-allowed" : "cursor-pointer"
+                      }`}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <span>Sending Request...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>Submit Quotation Request</span>
+                          <Send className="w-4 h-4 ml-1" />
+                        </>
+                      )}
                     </button>
+
+                    {formStatus && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className={`mt-4 p-4 rounded-xl text-center font-bold text-sm flex items-center justify-center gap-2.5 ${
+                          formStatus.includes("Thank")
+                            ? "bg-emerald-50 text-emerald-700 border border-emerald-300"
+                            : "bg-red-50 text-red-600 border border-red-300"
+                        }`}
+                      >
+                        {formStatus.includes("Thank") ? (
+                          <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+                        ) : (
+                          <AlertCircle className="w-5 h-5 text-red-500 shrink-0" />
+                        )}
+                        <span>{formStatus}</span>
+                      </motion.div>
+                    )}
                   </form>
 
                   <div className="flex justify-center items-center gap-6 md:gap-10 mt-6 pt-4 border-t border-slate-100 text-[10px] text-slate-500 font-medium">
@@ -1918,7 +1984,7 @@ export default function NapcenLandingPage() {
                 <p className="text-slate-400 mb-10 font-medium leading-relaxed relative z-10">
                   Provide your process specifications, and our engineers will evaluate the requirements for a customized solution.
                 </p>
-                <a href="mailto:info@napcen.com" className="relative z-10 flex w-full justify-between items-center bg-white hover:bg-slate-200 text-black font-black py-4 px-8 rounded-full transition-all text-sm tracking-widest uppercase group-hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+                <a href="#contact" onClick={(e) => { e.preventDefault(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); }} className="relative z-10 flex w-full justify-between items-center bg-white hover:bg-slate-200 text-black font-black py-4 px-8 rounded-full transition-all text-sm tracking-widest uppercase group-hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] cursor-pointer">
                   <span>Get my quotation</span>
                   <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center group-hover:scale-110 transition-transform">
                     <ChevronRight className="w-4 h-4 text-white" />
@@ -1931,7 +1997,7 @@ export default function NapcenLandingPage() {
             <div className="mt-16 pt-8 border-t border-white/10">
               <h4 className="text-slate-300 font-bold text-sm mb-2">Enquiry data & privacy</h4>
               <p className="text-slate-500 text-xs leading-relaxed max-w-4xl">
-                This preview processes form values in your browser to prepare a message. It does not upload or store your form entries on this website. If you choose WhatsApp or email, the information you review is passed to that service when you open it and sent to NAPCEN only when you confirm Send. Contact <a href="mailto:info@napcen.com" className="text-slate-300 hover:text-white underline underline-offset-2 transition-colors">info@napcen.com</a> about handling of enquiries. No advertising conversion tag is installed in this preview.
+                Your enquiry details are submitted securely to NAPCEN's engineering team for prompt technical review and customized quotation. We do not sell or share your contact information with third parties. For direct communications, you can also reach us at <a href="mailto:info@napcen.com" className="text-slate-300 hover:text-white underline underline-offset-2 transition-colors">info@napcen.com</a>.
               </p>
             </div>
           </div>
